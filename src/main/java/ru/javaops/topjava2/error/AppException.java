@@ -13,9 +13,4 @@ public class AppException extends ResponseStatusException {
         super(status, message);
         this.options = options;
     }
-
-    @Override
-    public String getMessage() {
-        return getReason();
-    }
 }
