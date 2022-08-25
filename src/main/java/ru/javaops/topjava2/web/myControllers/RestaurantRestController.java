@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.javaops.topjava2.model.Restaurant;
-import ru.javaops.topjava2.repository.RestaurantRepository;
+import ru.javaops.topjava2.repository.CrudRestaurantRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -19,7 +19,7 @@ public class RestaurantRestController {
     static final String REST_URL = "/api/restaurant";
 
     @Autowired
-    protected RestaurantRepository repository;
+    protected CrudRestaurantRepository repository;
 
 
     @GetMapping(REST_URL)

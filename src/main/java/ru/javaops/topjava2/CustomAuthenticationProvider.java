@@ -9,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import ru.javaops.topjava2.model.User;
-import ru.javaops.topjava2.repository.UserRepository;
+import ru.javaops.topjava2.repository.CrudUserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
-    private UserRepository userRepository;
+    private CrudUserRepository crudUserRepository;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -26,7 +26,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String email = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        User user = userRepository.getByEmail(email).get();
+        User user = crudUserRepository.getByEmail(email).get();
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getRoles().stream().findAny().get().name())); // description is a string

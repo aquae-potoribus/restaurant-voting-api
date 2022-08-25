@@ -1,11 +1,11 @@
 package ru.javaops.topjava2.repository;
 
 import org.springframework.transaction.annotation.Transactional;
-import ru.javaops.topjava2.model.Menus;
+import ru.javaops.topjava2.model.Menu;
 
 import java.util.Optional;
 
 @Transactional(readOnly = true)
-public interface MenuRepository extends BaseRepository<Menus> {
-    Optional<Menus> getMenuById(Integer id);
+public interface CrudMenuRepository extends BaseRepository<Menu> {
+    Optional<Menu> getMenuById(Integer id);
 }

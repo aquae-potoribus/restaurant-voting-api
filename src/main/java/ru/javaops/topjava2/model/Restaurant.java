@@ -1,6 +1,7 @@
 package ru.javaops.topjava2.model;
 
 import lombok.*;
+import ru.javaops.topjava2.HasId;
 
 import javax.persistence.*;
 
@@ -10,26 +11,27 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
-public class Restaurant {
+public class Restaurant implements HasId {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id = 1;
 
     @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumns({
-//            @JoinColumn(name = "menu_id", referencedColumnName = "id",
-//                    insertable = true),
-//            @JoinColumn(name = "dish_id", referencedColumnName = "dish",
-//                    insertable = true)
-//    })
     @JoinColumn(name = "menu_id", referencedColumnName = "id")
-    //@JoinColumn(name = "dish_id", referencedColumnName = "dish")
-    private Menus menus;
+    private Menu menu;
 
     @OneToOne
-    @JoinColumn(name = "owner", referencedColumnName = "id",
-            insertable = true)
+    @JoinColumn(name = "owner", referencedColumnName = "id")
     private User user;
 
+    @Override
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
 }

@@ -8,12 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.javaops.topjava2.model.Dish;
-import ru.javaops.topjava2.model.Exmpl;
-import ru.javaops.topjava2.model.Menus;
-import ru.javaops.topjava2.repository.DishRepository;
-import ru.javaops.topjava2.repository.ExmplRepository;
-import ru.javaops.topjava2.repository.MenuRepository;
-import ru.javaops.topjava2.repository.RestaurantRepository;
+import ru.javaops.topjava2.model.Menu;
+import ru.javaops.topjava2.repository.CrudDishRepository;
+import ru.javaops.topjava2.repository.CrudMenuRepository;
+import ru.javaops.topjava2.repository.CrudRestaurantRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,21 +26,17 @@ public class AdminRestController {
     static final String REST_URL = "/api/admin";
 
     @Autowired
-    protected DishRepository dishRepository;
+    protected CrudDishRepository dishRepository;
 
     @Autowired
-    protected MenuRepository menuRepository;
+    protected CrudMenuRepository menuRepository;
 
     @Autowired
-    protected RestaurantRepository restaurantRepository;
-
-    @Autowired
-    protected ExmplRepository exmplRepository;
+    protected CrudRestaurantRepository restaurantRepository;
 
     @PostMapping(value = "/api/admin/menu", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void createMenu(@RequestBody List<Dish> dishes, @RequestBody Menus menu) {
+    public void createMenu(@RequestBody List<Dish> dishes, @RequestBody Menu menu) {
         log.info("createArray {}", dishes);
-        //     menu.setUser(AuthUser);
         menuRepository.save(menu);
         for (Dish dish : dishes) {
             dish.setMenu(menu);
@@ -56,13 +50,12 @@ public class AdminRestController {
         List<Dish> dishes = new ArrayList<>();
 
         String menuName = (String) map.get("menu_name");
-        Menus menu = new Menus();
+        Menu menu = new Menu();
         for (int i = 0; i < (map.size() - 1) / 2; i++) {
             String name = (String) map.get("name" + i);
             Integer price = (Integer) map.get("price" + i);
             dishes.add(new Dish(name, price, menu));
         }
-        // menuRepository.save(menu);
         dishRepository.saveAll(dishes);
 
 
@@ -72,14 +65,5 @@ public class AdminRestController {
     public void createDish(@RequestBody Dish dish) {
         log.info("create {}", dish);
         dishRepository.save(dish);
-        //Menus menus = new;
-        //menuRepository.
     }
-
-    @PostMapping(value = "/api/admin/menu/exmpl", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void createDish(@RequestBody Exmpl exmpl) {
-        log.info("create {}", exmpl);
-        exmplRepository.save(exmpl);
-    }
-
 }

@@ -5,11 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.javaops.topjava2.model.Dish;
-import ru.javaops.topjava2.repository.DishRepository;
+import ru.javaops.topjava2.model.Menu;
+import ru.javaops.topjava2.repository.CrudMenuRepository;
+import ru.javaops.topjava2.to.DishTo;
+import ru.javaops.topjava2.repository.CrudDishRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
+import static ru.javaops.topjava2.util.DishUtil.updateFromTo;
 import static ru.javaops.topjava2.util.validation.ValidationUtil.assureIdConsistent;
 
 @RestController
@@ -21,7 +26,10 @@ public class DishRestController {
     static final String REST_URL = "/api/dish";
 
     @Autowired
-    protected DishRepository repository;
+    protected CrudDishRepository repository;
+
+    @Autowired
+    protected CrudMenuRepository menurepository;
 
     @GetMapping(REST_URL)
     List<Dish> all() {
@@ -47,19 +55,28 @@ public class DishRestController {
     }
 
     @PostMapping(value = REST_URL, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Dish create(@RequestBody Dish dish) {
-        log.info("create {}", dish);
-
+    public Dish create(@RequestBody DishTo dishTo) {
+        log.info("create {}", dishTo);
+        Optional<Menu> optionalMenus = menurepository.getMenuById(dishTo.getMenuId());
+        if (!optionalMenus.isPresent()) {
+            throw new EntityNotFoundException("Menu with id: " + dishTo.getMenuId() + " does not exist");
+        }
+        Dish dish = new Dish(dishTo.getName(), dishTo.getPrice(), optionalMenus.get());
         return repository.save(dish);
     }
 
     @PutMapping(value = REST_URL + "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    Dish update(@RequestBody Dish dish, @PathVariable Integer id) {
-        log.info("update {}", dish);
-        assureIdConsistent(dish, id);
-        dish.setId(id);
-        return repository.save(dish);
-
+    void update(@RequestBody DishTo dishTo, @PathVariable Integer id) {
+        log.info("update {}", dishTo);
+        Optional<Menu> optionalMenus = menurepository.getMenuById(dishTo.getMenuId());
+        if (!optionalMenus.isPresent()) {
+            throw new EntityNotFoundException("Menu with id: " + dishTo.getMenuId() + " does not exist");
+        }
+        Menu menu = optionalMenus.get();
+        Dish newDish = updateFromTo(dishTo,menu);
+        assureIdConsistent(newDish, id);
+        repository.updateDishById(menu,dishTo.getName(),dishTo.getPrice(), id);
+//         repository.save(newDish);
     }
 
     @DeleteMapping(value = REST_URL + "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)

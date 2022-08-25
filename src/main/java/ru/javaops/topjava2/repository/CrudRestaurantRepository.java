@@ -6,6 +6,6 @@ import ru.javaops.topjava2.model.Restaurant;
 import java.util.Optional;
 
 @Transactional(readOnly = true)
-public interface RestaurantRepository extends BaseRepository<Restaurant> {
+public interface CrudRestaurantRepository extends BaseRepository<Restaurant> {
     Optional<Restaurant> getRestaurantById(Integer id);
 }

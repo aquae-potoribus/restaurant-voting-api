@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Transactional(readOnly = true)
-public interface VoteRepository extends BaseRepository<Vote> {
+public interface CrudVoteRepository extends BaseRepository<Vote> {
     Optional<Vote> getVoteById(Long id);
 
     @Query("SELECT v FROM Vote v WHERE FORMATDATETIME(registered,'yyyy-MM-dd')  = ?1 and v.user = ?2")

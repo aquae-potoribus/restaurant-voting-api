@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javaops.topjava2.model.Role;
 import ru.javaops.topjava2.model.User;
-import ru.javaops.topjava2.repository.UserRepository;
+import ru.javaops.topjava2.repository.CrudUserRepository;
 import ru.javaops.topjava2.web.AbstractControllerTest;
 import ru.javaops.topjava2.web.GlobalExceptionHandler;
 
@@ -26,7 +26,7 @@ class AdminUserControllerTest extends AbstractControllerTest {
     private static final String REST_URL = AdminUserController.REST_URL + '/';
 
     @Autowired
-    private UserRepository userRepository;
+    private CrudUserRepository crudUserRepository;
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
@@ -62,7 +62,7 @@ class AdminUserControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.delete(REST_URL + USER_ID))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        assertFalse(userRepository.findById(USER_ID).isPresent());
+        assertFalse(crudUserRepository.findById(USER_ID).isPresent());
     }
 
     @Test
@@ -107,7 +107,7 @@ class AdminUserControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        USER_MATCHER.assertMatch(userRepository.getById(USER_ID), getUpdated());
+        USER_MATCHER.assertMatch(crudUserRepository.getById(USER_ID), getUpdated());
     }
 
     @Test
@@ -123,7 +123,7 @@ class AdminUserControllerTest extends AbstractControllerTest {
         int newId = created.id();
         newUser.setId(newId);
         USER_MATCHER.assertMatch(created, newUser);
-        USER_MATCHER.assertMatch(userRepository.getById(newId), newUser);
+        USER_MATCHER.assertMatch(crudUserRepository.getById(newId), newUser);
     }
 
     @Test
@@ -144,7 +144,7 @@ class AdminUserControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        assertFalse(userRepository.getById(USER_ID).isEnabled());
+        assertFalse(crudUserRepository.getById(USER_ID).isEnabled());
     }
 
     @Test

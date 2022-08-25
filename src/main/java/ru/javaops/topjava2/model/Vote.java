@@ -1,6 +1,7 @@
 package ru.javaops.topjava2.model;
 
 import lombok.*;
+import ru.javaops.topjava2.HasId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Vote {
+public class Vote implements HasId {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -47,5 +48,15 @@ public class Vote {
                 ", user=" + user.getId() +
                 ", dateTime=" + dateTime +
                 '}';
+    }
+
+    @Override
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    @Override
+    public Integer getId() {
+        return id;
     }
 }

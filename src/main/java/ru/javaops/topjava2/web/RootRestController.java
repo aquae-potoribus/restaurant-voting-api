@@ -2,7 +2,7 @@ package ru.javaops.topjava2.web;
 
 import org.springframework.web.bind.annotation.*;
 import ru.javaops.topjava2.model.User;
-import ru.javaops.topjava2.repository.UserRepository;
+import ru.javaops.topjava2.repository.CrudUserRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -12,9 +12,9 @@ public class RootRestController {
 
     static final String REST_URL = "/api/admin/users";
 
-    private final UserRepository repository;
+    private final CrudUserRepository repository;
 
-    RootRestController(UserRepository repository) {
+    RootRestController(CrudUserRepository repository) {
         this.repository = repository;
     }
 

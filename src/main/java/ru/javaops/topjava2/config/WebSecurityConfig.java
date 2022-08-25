@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,9 +14,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import ru.javaops.topjava2.CustomAuthenticationProvider;
-import ru.javaops.topjava2.model.Role;
 import ru.javaops.topjava2.model.User;
-import ru.javaops.topjava2.repository.UserRepository;
+import ru.javaops.topjava2.repository.CrudUserRepository;
 import ru.javaops.topjava2.web.AuthUser;
 
 import java.util.Optional;
@@ -39,13 +37,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(authProvider);
     }
 
-    private final UserRepository userRepository;
+    private final CrudUserRepository crudUserRepository;
 
     @Bean
     public UserDetailsService userDetailsService() {
         return email -> {
             log.debug("Authenticating '{}'", email);
-            Optional<User> optionalUser = userRepository.getByEmail(email);
+            Optional<User> optionalUser = crudUserRepository.getByEmail(email);
             return new AuthUser(optionalUser.orElseThrow(
                     () -> new UsernameNotFoundException("User '" + email + "' was not found")));
         };

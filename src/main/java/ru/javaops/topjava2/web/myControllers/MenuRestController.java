@@ -4,8 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import ru.javaops.topjava2.model.Menus;
-import ru.javaops.topjava2.repository.MenuRepository;
+import ru.javaops.topjava2.model.Menu;
+import ru.javaops.topjava2.repository.CrudMenuRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -19,10 +19,10 @@ public class MenuRestController {
     static final String REST_URL = "/api/menu";
 
     @Autowired
-    protected MenuRepository repository;
+    protected CrudMenuRepository repository;
 
     @GetMapping(REST_URL)
-    List<Menus> all() {
+    List<Menu> all() {
         log.info("get  all{}");
 
         return repository.findAll();
@@ -30,7 +30,7 @@ public class MenuRestController {
 
     // Single item
     @GetMapping(REST_URL + "/{id}")
-    Menus one(@PathVariable Integer id) {
+    Menu one(@PathVariable Integer id) {
         log.info("get {}", id);
 
         return repository.findById(id)
@@ -38,28 +38,28 @@ public class MenuRestController {
     }
 
     @PostMapping(value = REST_URL + "/createArray", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public List<Menus> createArray(@RequestBody List<Menus> menus) {
+    public List<Menu> createArray(@RequestBody List<Menu> menus) {
         log.info("createArray {}", menus);
 
         return repository.saveAll(menus);
     }
 
     @PostMapping(value = REST_URL, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Menus create(@RequestBody Menus menu) {
+    public Menu create(@RequestBody Menu menu) {
         log.info("create {}", menu);
 
         return repository.save(menu);
     }
 
     @PutMapping(value = REST_URL + "/{id}}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    Menus update(@RequestBody Menus menu, @PathVariable Integer id) {
+    Menu update(@RequestBody Menu menu, @PathVariable Integer id) {
         log.info("update {}", menu);
         menu.setId(id);
         return repository.save(menu);
     }
 
     @DeleteMapping(value = REST_URL + "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void createDish(@PathVariable Integer id) {
+    public void createMenu(@PathVariable Integer id) {
         log.info("delete {}", id);
         repository.delete(id);
     }

@@ -1,4 +1,4 @@
-package ru.javaops.topjava2.web.myControllers;
+package ru.javaops.topjava2.to;
 
 import lombok.ToString;
 

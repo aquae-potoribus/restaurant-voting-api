@@ -2,9 +2,14 @@ package ru.javaops.topjava2.util.validation;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.core.NestedExceptionUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
+import org.springframework.web.server.ResponseStatusException;
 import ru.javaops.topjava2.HasId;
 import ru.javaops.topjava2.error.IllegalRequestDataException;
+import ru.javaops.topjava2.model.Vote;
+
+import java.time.LocalTime;
 
 @UtilityClass
 public class ValidationUtil {
@@ -35,5 +40,12 @@ public class ValidationUtil {
     public static Throwable getRootCause(@NonNull Throwable t) {
         Throwable rootCause = NestedExceptionUtils.getRootCause(t);
         return rootCause != null ? rootCause : t;
+    }
+
+    public static void checkTime(LocalTime localTime, Integer hours, Integer minutes){
+        if (localTime.isAfter(LocalTime.of(hours, minutes))) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_ACCEPTABLE, "Votes are not accepted after " + hours + ":" + minutes);
+        }
     }
 }

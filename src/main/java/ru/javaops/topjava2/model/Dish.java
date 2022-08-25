@@ -32,12 +32,19 @@ public class Dish implements HasId {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "menu", referencedColumnName = "id",
             insertable = true)
-    private Menus menu;
+    private Menu menu;
 
-    public Dish(String name, int price, Menus menu) {
+    public Dish(String name, int price, Menu menu) {
         this.name = name;
         this.price = price;
         this.menu = menu;
+    }
+
+    public Dish(String name, int price, Menu menu, Integer id) {
+        this.name = name;
+        this.price = price;
+        this.menu = menu;
+        this.id = id;
     }
 
     @Override

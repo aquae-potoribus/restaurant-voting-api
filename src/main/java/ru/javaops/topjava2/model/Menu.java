@@ -1,6 +1,7 @@
 package ru.javaops.topjava2.model;
 
 import lombok.*;
+import ru.javaops.topjava2.HasId;
 
 import javax.persistence.*;
 
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @ToString
-public class Menus {
+public class Menu implements HasId {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -27,5 +28,13 @@ public class Menus {
             insertable = true)
     private User user;
 
+    @Override
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
+    @Override
+    public Integer getId() {
+        return id;
+    }
 }

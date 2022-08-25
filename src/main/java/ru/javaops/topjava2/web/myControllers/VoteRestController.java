@@ -7,9 +7,10 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ru.javaops.topjava2.model.Vote;
-import ru.javaops.topjava2.repository.RestaurantRepository;
-import ru.javaops.topjava2.repository.UserRepository;
-import ru.javaops.topjava2.repository.VoteRepository;
+import ru.javaops.topjava2.to.VoteTo;
+import ru.javaops.topjava2.repository.CrudRestaurantRepository;
+import ru.javaops.topjava2.repository.CrudUserRepository;
+import ru.javaops.topjava2.repository.CrudVoteRepository;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
@@ -17,6 +18,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
+
+import static ru.javaops.topjava2.util.validation.ValidationUtil.checkTime;
 
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -27,13 +30,13 @@ public class VoteRestController {
     static final String REST_URL = "/api/vote";
 
     @Autowired
-    protected VoteRepository repository;
+    protected CrudVoteRepository repository;
 
     @Autowired
-    protected UserRepository userRepository;
+    protected CrudUserRepository userRepository;
 
     @Autowired
-    protected RestaurantRepository restaurantRepository;
+    protected CrudRestaurantRepository restaurantRepository;
 
     private static final Integer END_VOTING_HOURS = 11;
     private static final Integer END_VOTING_MINUTES = 0;
@@ -68,11 +71,7 @@ public class VoteRestController {
         Optional<Vote> oldVoteOptional = repository.getVoteByDateAndUser(LocalDate.now(), newVote.getUser());
 
         if (oldVoteOptional.isPresent()) {
-            Vote oldValue = oldVoteOptional.get();
-            if (oldValue.getDateTime().toLocalTime().isAfter(LocalTime.of(END_VOTING_HOURS, END_VOTING_MINUTES))) {
-                throw new ResponseStatusException(
-                        HttpStatus.NOT_ACCEPTABLE, "Votes are not accepted after " + END_VOTING_HOURS + ":" + END_VOTING_MINUTES);
-            }
+            checkTime(LocalTime.now(),END_VOTING_HOURS,END_VOTING_MINUTES);
             return repository.updateVote(newVote.getUser(), newVote.getDateTime(), newVote.getRestaurant(), newVote.getId());
         }
         return repository.save(newVote);
