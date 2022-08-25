@@ -13,8 +13,6 @@ import ru.javaops.topjava2.to.UserTo;
 @UtilityClass
 public class DishUtil {
 
-    public static final PasswordEncoder PASSWORD_ENCODER = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-
     public static Dish updateFromTo(DishTo dishTo, Menu menu) {
         return new Dish(dishTo.getName(), dishTo.getPrice(), menu, dishTo.getId());
     }
