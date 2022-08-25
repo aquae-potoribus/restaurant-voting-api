@@ -37,13 +37,6 @@ public class MenuRestController {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    @PostMapping(value = REST_URL + "/createArray", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public List<Menu> createArray(@RequestBody List<Menu> menus) {
-        log.info("createArray {}", menus);
-
-        return repository.saveAll(menus);
-    }
-
     @PostMapping(value = REST_URL, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Menu create(@RequestBody Menu menu) {
         log.info("create {}", menu);

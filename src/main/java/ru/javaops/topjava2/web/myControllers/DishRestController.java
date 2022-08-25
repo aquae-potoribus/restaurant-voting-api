@@ -47,13 +47,6 @@ public class DishRestController {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    @PostMapping(value = REST_URL + "/createArray", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public List<Dish> createArray(@RequestBody List<Dish> dishes) {
-        log.info("createArray {}", dishes);
-
-        return repository.saveAll(dishes);
-    }
-
     @PostMapping(value = REST_URL, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Dish create(@RequestBody DishTo dishTo) {
         log.info("create {}", dishTo);

@@ -38,13 +38,6 @@ public class RestaurantRestController {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    @PostMapping(value = REST_URL + "/createArray", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public List<Restaurant> createArray(@RequestBody List<Restaurant> restaurants) {
-        log.info("createArray {}", restaurants);
-
-        return repository.saveAll(restaurants);
-    }
-
     @PostMapping(value = REST_URL, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Restaurant create(@RequestBody Restaurant restaurant) {
         log.info("create {}", restaurant);

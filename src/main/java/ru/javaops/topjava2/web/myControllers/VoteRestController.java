@@ -57,13 +57,6 @@ public class VoteRestController {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    @PostMapping(value = REST_URL + "/createArray", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public List<Vote> createArray(@RequestBody List<Vote> votes) {
-        log.info("createArray {}", votes);
-
-        return repository.saveAll(votes);
-    }
-
     @PostMapping(value = REST_URL, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Vote createOrUpdate(@RequestBody VoteTo vote) {
         Vote newVote = new Vote(restaurantRepository.getById(vote.getRestaurantId()), userRepository.getById(vote.getUserId()), LocalDateTime.now());
