@@ -39,8 +39,6 @@ logging:
     root: WARN
     ru.javaops.topjava2: DEBUG
     org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
-server:
-  port : 8081
 server.servlet:
   encoding:
     charset: UTF-8 # Charset of HTTP requests and responses. Added to the "Content-Type" header if not set explicitly

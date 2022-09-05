@@ -69,7 +69,6 @@ public class DishRestController {
         Dish newDish = updateFromTo(dishTo,menu);
         assureIdConsistent(newDish, id);
         repository.updateDishById(menu,dishTo.getName(),dishTo.getPrice(), id);
-//         repository.save(newDish);
     }
 
     @DeleteMapping(value = REST_URL + "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)

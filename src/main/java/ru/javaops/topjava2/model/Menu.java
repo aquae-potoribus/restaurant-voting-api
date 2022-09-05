@@ -37,4 +37,9 @@ public class Menu implements HasId {
     public Integer getId() {
         return id;
     }
+
+    public Menu(Restaurant restaurant, User user) {
+        this.restaurant = restaurant;
+        this.user = user;
+    }
 }

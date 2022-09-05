@@ -7,9 +7,9 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.server.ResponseStatusException;
 import ru.javaops.topjava2.HasId;
 import ru.javaops.topjava2.error.IllegalRequestDataException;
-import ru.javaops.topjava2.model.Vote;
 
 import java.time.LocalTime;
+import java.util.Optional;
 
 @UtilityClass
 public class ValidationUtil {
@@ -42,10 +42,19 @@ public class ValidationUtil {
         return rootCause != null ? rootCause : t;
     }
 
-    public static void checkTime(LocalTime localTime, Integer hours, Integer minutes){
+    public static void checkTime(LocalTime localTime, Integer hours, Integer minutes) {
         if (localTime.isAfter(LocalTime.of(hours, minutes))) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_ACCEPTABLE, "Votes are not accepted after " + hours + ":" + minutes);
         }
     }
+
+    public static void checkOptional(Optional<? extends HasId> optionalHasId, Integer id) {
+        if (!optionalHasId.isPresent()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_ACCEPTABLE,"instance with id " + id + " not found");
+        }
+    }
+
+
 }

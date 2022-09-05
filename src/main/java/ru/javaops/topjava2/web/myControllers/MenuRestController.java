@@ -5,10 +5,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.javaops.topjava2.model.Menu;
+import ru.javaops.topjava2.model.Restaurant;
+import ru.javaops.topjava2.model.User;
 import ru.javaops.topjava2.repository.CrudMenuRepository;
+import ru.javaops.topjava2.repository.CrudRestaurantRepository;
+import ru.javaops.topjava2.repository.CrudUserRepository;
+import ru.javaops.topjava2.to.MenuTo;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
+
+import static ru.javaops.topjava2.util.validation.ValidationUtil.checkOptional;
 
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -20,6 +28,12 @@ public class MenuRestController {
 
     @Autowired
     protected CrudMenuRepository repository;
+
+    @Autowired
+    protected CrudUserRepository userRepository;
+
+    @Autowired
+    protected CrudRestaurantRepository restaurantRepository;
 
     @GetMapping(REST_URL)
     List<Menu> all() {
@@ -38,10 +52,13 @@ public class MenuRestController {
     }
 
     @PostMapping(value = REST_URL, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Menu create(@RequestBody Menu menu) {
-        log.info("create {}", menu);
-
-        return repository.save(menu);
+    public Menu create(@RequestBody MenuTo menuTo) {
+        log.info("create {}", menuTo);
+        Optional<Restaurant> restaurant = restaurantRepository.findById(menuTo.getRestaurantId());
+        checkOptional(restaurant,menuTo.getRestaurantId());
+        Optional<User> user = userRepository.findById(menuTo.getUserId());
+        checkOptional(user,menuTo.getUserId());
+        return repository.save(new Menu(restaurant.get(),user.get()));
     }
 
     @PutMapping(value = REST_URL + "/{id}}", consumes = MediaType.APPLICATION_JSON_VALUE)

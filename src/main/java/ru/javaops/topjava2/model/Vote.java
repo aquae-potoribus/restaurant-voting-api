@@ -30,11 +30,6 @@ public class Vote implements HasId {
     @NotNull
     private LocalDateTime dateTime;
 
-//    public Vote(Restaurant restaurant, User user) {
-//        this.restaurant = restaurant;
-//        this.user = user;
-//    }
-
     public Vote(Restaurant restaurant, User user, LocalDateTime dateTime) {
         this.restaurant = restaurant;
         this.user = user;
