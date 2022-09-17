@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import ru.javaops.topjava2.HasIdAndEmail;
-import ru.javaops.topjava2.repository.UserRepository;
+import ru.javaops.topjava2.repository.CrudUserRepository;
 import ru.javaops.topjava2.web.GlobalExceptionHandler;
 import ru.javaops.topjava2.web.SecurityUtil;
 
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 @AllArgsConstructor
 public class UniqueMailValidator implements org.springframework.validation.Validator {
 
-    private final UserRepository repository;
+    private final CrudUserRepository repository;
     private final HttpServletRequest request;
 
     @Override
@@ -39,7 +39,8 @@ public class UniqueMailValidator implements org.springframework.validation.Valid
                             // Workaround for update with user.id=null in request body
                             // ValidationUtil.assureIdConsistent called after this validation
                             String requestURI = request.getRequestURI();
-                            if (requestURI.endsWith("/" + dbId) || (dbId == SecurityUtil.authId() && requestURI.contains("/profile"))) return;
+                            if (requestURI.endsWith("/" + dbId) || (dbId == SecurityUtil.authId() && requestURI.contains("/profile")))
+                                return;
                         }
                         errors.rejectValue("email", "", GlobalExceptionHandler.EXCEPTION_DUPLICATE_EMAIL);
                     });

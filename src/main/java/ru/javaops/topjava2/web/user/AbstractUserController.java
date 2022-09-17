@@ -7,14 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import ru.javaops.topjava2.model.User;
-import ru.javaops.topjava2.repository.UserRepository;
+import ru.javaops.topjava2.repository.CrudUserRepository;
 import ru.javaops.topjava2.util.UserUtil;
 
 @Slf4j
 public abstract class AbstractUserController {
 
     @Autowired
-    protected UserRepository repository;
+    protected CrudUserRepository repository;
 
     @Autowired
     private UniqueMailValidator emailValidator;

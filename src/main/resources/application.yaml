@@ -17,7 +17,7 @@ spring:
   datasource:
     # ImMemory
     url: jdbc:h2:mem:voting
-    #    tcp: jdbc:h2:tcp://localhost:9092/mem:voting
+       # tcp: jdbc:h2:tcp://localhost:9092/mem:voting
     username: sa
     password:
 
@@ -39,7 +39,6 @@ logging:
     root: WARN
     ru.javaops.topjava2: DEBUG
     org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
-
 server.servlet:
   encoding:
     charset: UTF-8 # Charset of HTTP requests and responses. Added to the "Content-Type" header if not set explicitly
